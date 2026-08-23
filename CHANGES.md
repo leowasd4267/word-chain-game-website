@@ -1,0 +1,1 @@
+Updated: added inquiries API, room join/leave endpoints, frontend room/chat/game UI, contact page, admin inquiries page, updated prisma schema with Inquiry model

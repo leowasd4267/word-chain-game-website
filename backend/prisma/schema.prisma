@@ -1,0 +1,58 @@
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  numberHash String
+  isAdmin    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  roomPlayers RoomPlayer[]
+  moves      Move[]
+}
+
+model Room {
+  id        String   @id @default(uuid())
+  name      String
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  players   RoomPlayer[]
+  games     Game[]
+}
+
+model RoomPlayer {
+  id       String   @id @default(uuid())
+  roomId   String
+  room     Room     @relation(fields: [roomId], references: [id])
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  joinedAt DateTime @default(now())
+}
+
+model Game {
+  id        String   @id @default(uuid())
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id])
+  startedAt DateTime @default(now())
+  endedAt   DateTime?
+  state     Json
+  moves     Move[]
+}
+
+model Move {
+  id        String   @id @default(uuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id])
+  playerId  String
+  player    User     @relation(fields: [playerId], references: [id])
+  word      String
+  turnIndex Int
+  createdAt DateTime @default(now())
+}
+
+model Inquiry {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
